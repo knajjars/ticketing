@@ -12,7 +12,7 @@ app.use(json())
 app.use(
   cookieSession({
     secure: NODE_ENV !== 'test',
-    signed: false,
+    signed: false
   })
 )
 app.use(createRouter())

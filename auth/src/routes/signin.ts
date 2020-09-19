@@ -12,9 +12,7 @@ const router = express.Router();
 router.post(
   "/signin",
   [
-    body("email")
-      .isEmail()
-      .withMessage("Email must be valid"),
+    body("email").isEmail().withMessage("Email must be valid"),
     body("password")
       .trim()
       .notEmpty()
