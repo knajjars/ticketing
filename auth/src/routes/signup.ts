@@ -1,34 +1,32 @@
-import express, { Request, Response, NextFunction } from 'express'
-import { body } from 'express-validator'
-import jwt from 'jsonwebtoken'
+import { BadRequestError, JWT_KEY, validateRequest } from "@knticketing/common";
+import express, { Request, Response, NextFunction } from "express";
+import { body } from "express-validator";
+import jwt from "jsonwebtoken";
 
-import { User } from '../models'
-import { BadRequestError } from '../errors'
-import { JWT_KEY } from '../services'
-import { validateRequest } from '../middlewares'
+import { User } from "../models";
 
-const router = express.Router()
+const router = express.Router();
 
 router.post(
-  '/signup',
+  "/signup",
   [
-    body('email').isEmail().withMessage('Email must be valid'),
-    body('password')
+    body("email").isEmail().withMessage("Email must be valid"),
+    body("password")
       .trim()
       .isLength({ min: 4, max: 20 })
-      .withMessage('Password must be between 4 and 20 characters'),
+      .withMessage("Password must be between 4 and 20 characters"),
   ],
   validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body
-    const existingUser = await User.findOne({ email })
+    const { email, password } = req.body;
+    const existingUser = await User.findOne({ email });
 
     if (existingUser !== null) {
-      throw new BadRequestError('Email in use')
+      throw new BadRequestError("Email in use");
     }
 
-    const user = User.build({ email, password })
-    await user.save()
+    const user = User.build({ email, password });
+    await user.save();
 
     const userJwt = jwt.sign(
       {
@@ -36,12 +34,12 @@ router.post(
         email: user.email,
       },
       JWT_KEY
-    )
+    );
 
-    req.session = { jwt: userJwt }
+    req.session = { jwt: userJwt };
 
-    return res.status(201).send(user)
+    return res.status(201).send(user);
   }
-)
+);
 
-export { router as signupRouter }
+export { router as signupRouter };

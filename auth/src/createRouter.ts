@@ -1,8 +1,7 @@
+import { errorHandler, NotFoundError } from "@knticketing/common";
 import { Router } from "express";
 
 import { createAuthRouter } from "./routes";
-import { errorHandler } from "./middlewares";
-import { NotFoundError } from "./errors";
 
 export function createRouter(): Router {
   const router = Router();
