@@ -1,4 +1,4 @@
-import { currentUser, requireAuth } from "@knticketing/common";
+import { currentUser } from "@knticketing/common";
 import express from "express";
 
 const router = express.Router();
