@@ -1,7 +1,5 @@
-import request from 'supertest'
+import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
-
-import { app } from '../app'
 
 declare global {
   namespace NodeJS {
@@ -14,7 +12,7 @@ declare global {
 global.signin = () => {
   // Build JWT payload (id, email)
   const payload = {
-    id: 'ABC123',
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com',
   }
 
